@@ -375,37 +375,105 @@
         }
 
         .trademark-item {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
-            transition: background 0.2s ease;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            background: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .trademark-item:hover {
-            background: var(--secondary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+            transform: translateY(-3px);
         }
 
-        .trademark-item:last-child {
-            border-bottom: none;
+        .trademark-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .trademark-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .trademark-logo {
+            flex-shrink: 0;
+        }
+
+        .trademark-text {
+            flex: 1;
         }
 
         .trademark-name {
-            font-weight: 600;
+            font-size: 1.25rem;
+            font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 0.25rem;
+            margin: 0 0 0.25rem 0;
+        }
+
+        .trademark-feature {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .trademark-number {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
         }
 
         .trademark-details {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .detail-row {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
+            align-items: flex-start;
         }
 
         .trademark-detail {
             display: flex;
-            align-items: center;
-            gap: 0.25rem;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .trademark-detail i {
+            color: var(--primary-color);
+            width: 16px;
+            margin-top: 0.125rem;
+            flex-shrink: 0;
+        }
+
+        .trademark-detail span {
+            line-height: 1.4;
+        }
+
+        .trademark-detail strong {
+            color: var(--text-primary);
+            font-weight: 600;
         }
 
         .loading-spinner {
@@ -518,11 +586,11 @@
                             <p class="text-muted mb-3">Choose one or more countries to search across different trademark databases</p>
                             
                             <div class="country-grid">
-                                <div class="country-card selected" data-country="UK">
-                                    <div class="country-flag">🇬🇧</div>
-                                    <div class="country-name">United Kingdom</div>
-                                    <div class="country-status">EU Trademarks - ACTIVE</div>
-                                </div>
+                        <div class="country-card selected" data-country="UK">
+                            <div class="country-flag">🇬🇧</div>
+                            <div class="country-name">United Kingdom</div>
+                            <div class="country-status">UK IPO - ACTIVE</div>
+                        </div>
                                 
                                 <div class="country-card" data-country="MX">
                                     <div class="country-flag">🇲🇽</div>
@@ -536,11 +604,11 @@
                                     <div class="country-status">International - ACTIVE</div>
                                 </div>
                                 
-                                <div class="country-card" data-country="DE">
-                                    <div class="country-flag">🇩🇪</div>
-                                    <div class="country-name">Germany</div>
-                                    <div class="country-status">EU Companies - ACTIVE</div>
-                                </div>
+                        <div class="country-card" data-country="DE">
+                            <div class="country-flag">🇩🇪</div>
+                            <div class="country-name">Germany</div>
+                            <div class="country-status">EU Trademarks - ACTIVE</div>
+                        </div>
                             </div>
                             
                             <div class="selected-countries">

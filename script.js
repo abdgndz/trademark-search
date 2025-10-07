@@ -672,11 +672,19 @@ class TrademarkSearch {
             const countrySection = document.createElement('div');
             countrySection.className = 'country-results';
             
+            // Create status summary for header
+            let statusSummaryText = '';
+            if (result.results && result.results.length > 0) {
+                const groupedResults = this.groupResultsByStatus(result.results);
+                const statusSummary = this.createStatusSummary(groupedResults);
+                statusSummaryText = ` • ${statusSummary}`;
+            }
+            
             let countryContent = `
                 <div class="country-header" onclick="this.parentElement.querySelector('.country-details').classList.toggle('collapsed')">
                     <span class="country-flag-large">${result.flag}</span>
                     <span class="country-name-large">${result.countryName}</span>
-                    <span class="country-count">${result.total || 0} found</span>
+                    <span class="country-count">${result.total || 0} found${statusSummaryText}</span>
                     <i class="fas fa-chevron-down toggle-icon"></i>
                 </div>
                 <div class="country-details">
@@ -708,14 +716,6 @@ class TrademarkSearch {
                 // Group results by status
                 const groupedResults = this.groupResultsByStatus(result.results);
                 
-                // Create status summary
-                const statusSummary = this.createStatusSummary(groupedResults);
-                countryContent += `
-                    <div class="status-summary">
-                        ${statusSummary}
-                    </div>
-                `;
-                
                 countryContent += '<div class="status-groups">';
                 
                 Object.entries(groupedResults).forEach(([status, trademarks]) => {
@@ -731,30 +731,95 @@ class TrademarkSearch {
                     `;
                     
                     trademarks.forEach(trademark => {
+                        // Nice Classes
+                        const niceClasses = trademark.niceClasses ? trademark.niceClasses.join(', ') : 'N/A';
+                        
+                        // Applicants
+                        const applicants = trademark.applicants ? trademark.applicants.map(app => app.name).join(', ') : 'N/A';
+                        
+                        // Representatives
+                        const representatives = trademark.representatives ? trademark.representatives.map(rep => rep.name).join(', ') : '';
+                        
+                        // Goods and Services
+                        const goodsAndServices = trademark.goodsAndServices ? trademark.goodsAndServices.map(gs => 
+                            `Class ${gs.classNumber}: ${gs.description || 'N/A'}`
+                        ).join('<br>') : 'N/A';
+                        
+                        // Check if trademark has an image
+                        const hasImage = trademark.markFeature === 'FIGURATIVE' || trademark.markFeature === 'SHAPE_3D' || trademark.markFeature === 'COLOUR';
+                        const imageUrl = hasImage ? `${window.location.origin}/api/trademarks/${trademark.applicationNumber}/image?access_token=${this.accessToken}` : null;
+                        
                         countryContent += `
                             <div class="trademark-item">
-                                <div class="trademark-name">${trademark.wordMarkSpecification?.verbalElement || 'N/A'}</div>
+                                <div class="trademark-header">
+                                    <div class="trademark-info">
+                                        ${imageUrl ? `
+                                            <div class="trademark-logo">
+                                                <img src="${imageUrl}" alt="Trademark Logo" 
+                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                                     style="max-width: 60px; max-height: 60px; object-fit: contain; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                                <div class="logo-placeholder" style="display: none; width: 60px; height: 60px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; align-items: center; justify-content: center; color: #64748b; font-size: 0.8rem;">
+                                                    <i class="fas fa-image"></i>
+                                                </div>
+                                            </div>
+                                        ` : ''}
+                                        <div class="trademark-text">
+                                            <div class="trademark-name">${trademark.wordMarkSpecification?.verbalElement || 'N/A'}</div>
+                                            <div class="trademark-feature">${trademark.markFeature || 'N/A'}</div>
+                                        </div>
+                                    </div>
+                                    <div class="trademark-number">#${trademark.applicationNumber}</div>
+                                </div>
+                                
                                 <div class="trademark-details">
-                                    <div class="trademark-detail">
-                                        <i class="fas fa-hashtag"></i>
-                                        <span>${trademark.applicationNumber}</span>
-                                    </div>
-                                    <div class="trademark-detail">
-                                        <i class="fas fa-calendar"></i>
-                                        <span>${trademark.applicationDate || 'N/A'}</span>
-                                    </div>
-                                    ${trademark.registrationDate ? `
+                                    <div class="detail-row">
                                         <div class="trademark-detail">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>${trademark.registrationDate}</span>
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span><strong>Application:</strong> ${trademark.applicationDate || 'N/A'}</span>
+                                        </div>
+                                        ${trademark.registrationDate ? `
+                                            <div class="trademark-detail">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span><strong>Registered:</strong> ${trademark.registrationDate}</span>
+                                            </div>
+                                        ` : ''}
+                                        ${trademark.expiryDate ? `
+                                            <div class="trademark-detail">
+                                                <i class="fas fa-clock"></i>
+                                                <span><strong>Expires:</strong> ${trademark.expiryDate}</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                    
+                                    <div class="detail-row">
+                                        <div class="trademark-detail">
+                                            <i class="fas fa-tags"></i>
+                                            <span><strong>Nice Classes:</strong> ${niceClasses}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="detail-row">
+                                        <div class="trademark-detail">
+                                            <i class="fas fa-building"></i>
+                                            <span><strong>Applicant:</strong> ${applicants}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    ${representatives ? `
+                                        <div class="detail-row">
+                                            <div class="trademark-detail">
+                                                <i class="fas fa-user-tie"></i>
+                                                <span><strong>Representative:</strong> ${representatives}</span>
+                                            </div>
                                         </div>
                                     ` : ''}
-                                    ${trademark.expiryDate ? `
+                                    
+                                    <div class="detail-row">
                                         <div class="trademark-detail">
-                                            <i class="fas fa-clock"></i>
-                                            <span>${trademark.expiryDate}</span>
+                                            <i class="fas fa-list"></i>
+                                            <span><strong>Goods & Services:</strong><br>${goodsAndServices}</span>
                                         </div>
-                                    ` : ''}
+                                    </div>
                                 </div>
                             </div>
                         `;

@@ -85,6 +85,50 @@ app.get('/api/trademarks', async (req, res) => {
     }
 });
 
+// Proxy endpoint for trademark image
+app.get('/api/trademarks/:applicationNumber/image', async (req, res) => {
+    try {
+        console.log('Proxying trademark image request...');
+        
+        const { applicationNumber } = req.params;
+        const { access_token } = req.query;
+        
+        const imageUrl = `https://api.euipo.europa.eu/trademark-search/trademarks/${applicationNumber}/image`;
+
+        console.log('Image URL:', imageUrl);
+
+        const headers = {
+            'Accept': 'image/*',
+            'X-IBM-Client-Id': process.env.CLIENT_ID || '5a6c9a660fc2c2aea412cb317e4aeb6c'
+        };
+
+        if (access_token) {
+            headers['Authorization'] = `Bearer ${access_token}`;
+        }
+
+        const response = await fetch(imageUrl, {
+            method: 'GET',
+            headers: headers
+        });
+
+        if (!response.ok) {
+            console.log('Image response status:', response.status);
+            return res.status(response.status).json({ error: 'Image not found' });
+        }
+
+        // Set appropriate content type
+        const contentType = response.headers.get('content-type') || 'image/png';
+        res.set('Content-Type', contentType);
+        
+        // Stream the image data
+        response.body.pipe(res);
+        
+    } catch (error) {
+        console.error('Image proxy error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
     res.json({ status: 'OK', message: 'Proxy server is running' });
