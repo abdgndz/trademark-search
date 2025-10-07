@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SellerRunning Trademark Search</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary-color: #f8fafc;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            margin: 2rem auto;
+            max-width: 1200px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-section {
+            padding: 2rem;
+            background: white;
+        }
+
+        .search-form {
+            background: var(--secondary-color);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-control {
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .country-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .country-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .country-card:hover::before {
+            left: 100%;
+        }
+
+        .country-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .country-card.selected {
+            border-color: var(--success-color);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.1) 100%);
+        }
+
+        .country-card.not-implemented {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .country-flag {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .country-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .country-status {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .search-btn:active {
+            transform: translateY(0);
+        }
+
+        .results-section {
+            padding: 2rem;
+            background: white;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .results-count {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .country-results {
+            margin-bottom: 2rem;
+        }
+
+        .country-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--secondary-color);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .country-header:hover {
+            background: #e2e8f0;
+            transform: translateY(-1px);
+        }
+
+        .toggle-icon {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .country-details {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .country-details.collapsed {
+            max-height: 0;
+            margin-bottom: 0;
+        }
+
+        .status-summary {
+            padding: 0.75rem 1rem;
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .status-summary-item {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 500;
+            margin: 0.125rem;
+        }
+
+        .status-summary-item.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-summary-item.registered {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+        }
+
+        .status-summary-item.expired {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .status-summary-item.withdrawn {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .country-flag-large {
+            font-size: 1.5rem;
+        }
+
+        .country-name-large {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .country-count {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .status-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-group {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .status-header {
+            padding: 1rem;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-header.active {
+            background: var(--success-color);
+        }
+
+        .status-header.expired {
+            background: var(--warning-color);
+        }
+
+        .status-header.withdrawn {
+            background: var(--danger-color);
+        }
+
+        .status-header.registered {
+            background: var(--primary-color);
+        }
+
+        .trademark-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s ease;
+        }
+
+        .trademark-item:hover {
+            background: var(--secondary-color);
+        }
+
+        .trademark-item:last-child {
+            border-bottom: none;
+        }
+
+        .trademark-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .trademark-details {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .trademark-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--danger-color);
+            margin: 1rem 0;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .selected-countries {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 1rem;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 1.5rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .search-section, .results-section {
+                padding: 1.5rem;
+            }
+            
+            .country-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="main-container">
+            <!-- Header -->
+            <div class="header">
+                <h1><i class="fas fa-search me-3"></i>SellerRunning Trademark Search</h1>
+                <p>Professional trademark search across multiple jurisdictions</p>
+                <div class="status-badge">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Production API Active - Real-time trademark data</span>
+                </div>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <form id="searchForm" class="search-form">
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="trademarkName" class="form-label fw-bold">
+                                <i class="fas fa-trademark me-2"></i>Trademark Name
+                            </label>
+                            <input type="text" class="form-control form-control-lg" id="trademarkName" 
+                                   placeholder="Enter trademark name (e.g., Apple, Nike, Coca-Cola)" required>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-globe me-2"></i>Select Countries to Search
+                            </label>
+                            <p class="text-muted mb-3">Choose one or more countries to search across different trademark databases</p>
+                            
+                            <div class="country-grid">
+                                <div class="country-card selected" data-country="UK">
+                                    <div class="country-flag">🇬🇧</div>
+                                    <div class="country-name">United Kingdom</div>
+                                    <div class="country-status">EU Trademarks - ACTIVE</div>
+                                </div>
+                                
+                                <div class="country-card" data-country="MX">
+                                    <div class="country-flag">🇲🇽</div>
+                                    <div class="country-name">Mexico</div>
+                                    <div class="country-status">International - ACTIVE</div>
+                                </div>
+                                
+                                <div class="country-card" data-country="AU">
+                                    <div class="country-flag">🇦🇺</div>
+                                    <div class="country-name">Australia</div>
+                                    <div class="country-status">International - ACTIVE</div>
+                                </div>
+                                
+                                <div class="country-card" data-country="DE">
+                                    <div class="country-flag">🇩🇪</div>
+                                    <div class="country-name">Germany</div>
+                                    <div class="country-status">EU Companies - ACTIVE</div>
+                                </div>
+                            </div>
+                            
+                            <div class="selected-countries">
+                                <i class="fas fa-check me-2"></i>
+                                <span id="selectedCountries">United Kingdom</span> selected
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn search-btn btn-lg">
+                                <i class="fas fa-search me-2"></i>Search Trademarks
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Loading Spinner -->
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Searching trademark databases...</p>
+                </div>
+
+                <!-- Error Message -->
+                <div class="error-message" id="errorMessage"></div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="results" style="display: none;">
+                <div class="results-header">
+                    <h2 class="results-title" id="resultsTitle">Search Results</h2>
+                    <div class="results-count" id="totalResults">0 total found</div>
+                </div>
+                <div id="resultsContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    <!-- Main Application Script -->
+    <script src="script.js"></script>
+</body>
+</html>

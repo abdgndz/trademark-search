@@ -1,0 +1,248 @@
+// Configuration file for UK Trademark Search Application
+
+const CONFIG = {
+        // Multi-Country API Configuration
+        API: {
+            // United Kingdom (UK IPO) - ACTIVE - Working with your credentials!
+            UK: {
+                BASE_URL: 'https://api.euipo.europa.eu/trademark-search', // Using EUIPO API for UK search
+                ENDPOINTS: {
+                    SEARCH: '/trademarks',
+                    DETAILS: '/trademarks/{applicationNumber}',
+                    IMAGE: '/trademarks/{applicationNumber}/image',
+                    THUMBNAIL: '/trademarks/{applicationNumber}/image/thumbnail',
+                    SOUND: '/trademarks/{applicationNumber}/sound',
+                    VIDEO: '/trademarks/{applicationNumber}/video',
+                    MODEL: '/trademarks/{applicationNumber}/model'
+                },
+                OAUTH: {
+                    TOKEN_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/accessToken',
+                    AUTHORIZATION_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/authorize',
+                    CLIENT_ID: '5a6c9a660fc2c2aea412cb317e4aeb6c', // Your working credentials
+                    CLIENT_SECRET: '451e4f1cc80ae12075f9c5d47bd556d8', // Your working credentials
+                    SCOPES: ['trademark-search.trademarks.read']
+                },
+                STATUS: 'ACTIVE' // Working with your credentials!
+            },
+
+            // European Union (EUIPO) - Coming Soon
+            EU: {
+                BASE_URL: 'https://api.euipo.europa.eu/trademark-search',
+                ENDPOINTS: {
+                    SEARCH: '/trademarks',
+                    DETAILS: '/trademarks/{applicationNumber}',
+                    IMAGE: '/trademarks/{applicationNumber}/image',
+                    THUMBNAIL: '/trademarks/{applicationNumber}/image/thumbnail',
+                    SOUND: '/trademarks/{applicationNumber}/sound',
+                    VIDEO: '/trademarks/{applicationNumber}/video',
+                    MODEL: '/trademarks/{applicationNumber}/model'
+                },
+                OAUTH: {
+                    TOKEN_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/accessToken',
+                    AUTHORIZATION_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/authorize',
+                    CLIENT_ID: '5a6c9a660fc2c2aea412cb317e4aeb6c',
+                    CLIENT_SECRET: '451e4f1cc80ae12075f9c5d47bd556d8',
+                    SCOPES: ['trademark-search.trademarks.read']
+                },
+                STATUS: 'COMING_SOON' // Coming Soon
+            },
+
+            // Australia (IP Australia) - Coming Soon
+            AU: {
+                BASE_URL: 'https://api.ipaustralia.gov.au',
+                ENDPOINTS: {
+                    SEARCH: '/trademarks',
+                    DETAILS: '/trademarks/{applicationNumber}'
+                },
+                OAUTH: {
+                    TOKEN_URL: 'https://api.ipaustralia.gov.au/oauth/token',
+                    CLIENT_ID: 'AU_CLIENT_ID_HERE',
+                    CLIENT_SECRET: 'AU_CLIENT_SECRET_HERE'
+                },
+                STATUS: 'COMING_SOON' // Coming Soon
+            },
+
+            // Mexico (IMPI) - Coming Soon
+            MX: {
+                BASE_URL: 'https://api.impi.gob.mx',
+                ENDPOINTS: {
+                    SEARCH: '/marcas',
+                    DETAILS: '/marcas/{applicationNumber}'
+                },
+                OAUTH: {
+                    TOKEN_URL: 'https://api.impi.gob.mx/oauth/token',
+                    CLIENT_ID: 'MX_CLIENT_ID_HERE',
+                    CLIENT_SECRET: 'MX_CLIENT_SECRET_HERE'
+                },
+                STATUS: 'COMING_SOON' // Coming Soon
+            }
+        },
+        // Default search parameters
+        DEFAULT_SEARCH_PARAMS: {
+            size: 100, // Maximum 100 for comprehensive results
+            page: 0,
+            sort: 'applicationDate:desc'
+        },
+        // Rate limiting information
+        RATE_LIMITS: {
+            REQUESTS_PER_MINUTE: 60,
+            REQUESTS_PER_HOUR: 1000
+        }
+    },
+
+    // Application Settings
+    APP: {
+        NAME: 'UK Trademark Search',
+        VERSION: '1.0.0',
+        DESCRIPTION: 'Search for UK trademarks using the EUIPO API',
+        MAX_SEARCH_RESULTS: 100,
+        SEARCH_TIMEOUT: 30000 // 30 seconds
+    },
+
+    // UI Configuration
+    UI: {
+        LOADING_MESSAGE: 'Searching trademarks...',
+        NO_RESULTS_MESSAGE: 'No trademarks found matching your search criteria.',
+        ERROR_MESSAGE: 'An error occurred while searching. Please try again.',
+        SEARCH_PLACEHOLDER: 'Enter trademark name (e.g., "Apple", "Nike", "Coca-Cola")'
+    },
+
+    // Trademark Status Configuration
+    TRADEMARK_STATUS: {
+        ACTIVE_STATUSES: [
+            'REGISTERED',
+            'UNDER_EXAMINATION', 
+            'APPLICATION_PUBLISHED',
+            'REGISTRATION_PENDING',
+            'OPPOSITION_PENDING'
+        ],
+        INACTIVE_STATUSES: [
+            'WITHDRAWN',
+            'REFUSED',
+            'CANCELLED',
+            'EXPIRED',
+            'SURRENDERED'
+        ],
+        STATUS_DISPLAY: {
+            'REGISTERED': { 
+                text: 'Registered', 
+                class: 'status-registered', 
+                icon: 'fas fa-check-circle',
+                color: 'success'
+            },
+            'UNDER_EXAMINATION': { 
+                text: 'Under Examination', 
+                class: 'status-pending', 
+                icon: 'fas fa-clock',
+                color: 'warning'
+            },
+            'APPLICATION_PUBLISHED': { 
+                text: 'Published', 
+                class: 'status-pending', 
+                icon: 'fas fa-eye',
+                color: 'info'
+            },
+            'REGISTRATION_PENDING': { 
+                text: 'Registration Pending', 
+                class: 'status-pending', 
+                icon: 'fas fa-hourglass-half',
+                color: 'warning'
+            },
+            'WITHDRAWN': { 
+                text: 'Withdrawn', 
+                class: 'status-expired', 
+                icon: 'fas fa-times-circle',
+                color: 'danger'
+            },
+            'REFUSED': { 
+                text: 'Refused', 
+                class: 'status-expired', 
+                icon: 'fas fa-ban',
+                color: 'danger'
+            },
+            'CANCELLED': { 
+                text: 'Cancelled', 
+                class: 'status-expired', 
+                icon: 'fas fa-trash',
+                color: 'danger'
+            },
+            'EXPIRED': { 
+                text: 'Expired', 
+                class: 'status-expired', 
+                icon: 'fas fa-calendar-times',
+                color: 'danger'
+            },
+            'OPPOSITION_PENDING': { 
+                text: 'Opposition Pending', 
+                class: 'status-pending', 
+                icon: 'fas fa-gavel',
+                color: 'warning'
+            }
+        }
+    },
+
+    // Search Query Templates
+    SEARCH_QUERIES: {
+        // Search by trademark name (word mark)
+        BY_NAME: 'wordMarkSpecification.verbalElement==*{name}*',
+        // Search by application number
+        BY_APPLICATION_NUMBER: 'applicationNumber=={number}',
+        // Search by applicant name
+        BY_APPLICANT: 'applicants.name==*{applicant}*',
+        // Search by status
+        BY_STATUS: 'status=={status}',
+        // Search by date range
+        BY_DATE_RANGE: 'applicationDate>={startDate} and applicationDate<={endDate}',
+        // Search by Nice class
+        BY_NICE_CLASS: 'niceClasses=in=({classes})'
+    },
+
+    // Mock Data for Development/Demo
+        MOCK_DATA: {
+            ENABLED: false, // Real API is now active! Plan approved ✅
+        SAMPLE_TRADEMARKS: [
+            {
+                applicationNumber: "018692868",
+                applicationDate: "2020-03-15",
+                registrationDate: "2021-06-20",
+                expiryDate: "2031-06-20",
+                status: "REGISTERED",
+                statusDate: "2021-06-20",
+                markFeature: "WORD",
+                wordMarkSpecification: {
+                    verbalElement: "EXAMPLE BRAND"
+                },
+                applicants: [
+                    {
+                        name: "Example Company Ltd",
+                        identifier: "12345678"
+                    }
+                ],
+                goodsAndServices: [
+                    {
+                        classNumber: 25,
+                        description: "Clothing, footwear, headgear"
+                    }
+                ]
+            }
+        ]
+    },
+
+    // Error Messages
+    ERROR_MESSAGES: {
+        NETWORK_ERROR: 'Network error. Please check your internet connection.',
+        API_ERROR: 'API error. The service may be temporarily unavailable.',
+        INVALID_SEARCH: 'Please enter a valid trademark name to search.',
+        TIMEOUT_ERROR: 'Search request timed out. Please try again.',
+        RATE_LIMIT_ERROR: 'Too many requests. Please wait a moment before searching again.',
+        UNAUTHORIZED: 'Authentication required. Please check your API credentials.',
+        NOT_FOUND: 'No trademarks found matching your search criteria.'
+    }
+};
+
+// Export configuration for use in other files
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CONFIG;
+} else {
+    window.CONFIG = CONFIG;
+}
