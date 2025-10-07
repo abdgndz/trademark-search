@@ -371,7 +371,9 @@ class TrademarkSearch {
         }
 
         // Create RSQL query with Germany filter
-        const baseQuery = `wordMarkSpecification.verbalElement==*${trademarkName}*`;
+        // Handle multi-word searches by wrapping in quotes
+        const escapedName = trademarkName.includes(' ') ? `"${trademarkName}"` : trademarkName;
+        const baseQuery = `wordMarkSpecification.verbalElement==*${escapedName}*`;
         const deFilter = CONFIG.API.DE.QUERY_FILTER;
         const query = `${baseQuery} and ${deFilter}`;
         
@@ -418,7 +420,9 @@ class TrademarkSearch {
         }
 
         // Create RSQL query with UK filter
-        const baseQuery = `wordMarkSpecification.verbalElement==*${trademarkName}*`;
+        // Handle multi-word searches by wrapping in quotes
+        const escapedName = trademarkName.includes(' ') ? `"${trademarkName}"` : trademarkName;
+        const baseQuery = `wordMarkSpecification.verbalElement==*${escapedName}*`;
         const ukFilter = CONFIG.API.UK.QUERY_FILTER;
         const query = `${baseQuery} and ${ukFilter}`;
         
@@ -465,7 +469,9 @@ class TrademarkSearch {
         }
 
         // Create RSQL query with Australia filter
-        const baseQuery = `wordMarkSpecification.verbalElement==*${trademarkName}*`;
+        // Handle multi-word searches by wrapping in quotes
+        const escapedName = trademarkName.includes(' ') ? `"${trademarkName}"` : trademarkName;
+        const baseQuery = `wordMarkSpecification.verbalElement==*${escapedName}*`;
         const auFilter = CONFIG.API.AU.QUERY_FILTER;
         const query = `${baseQuery} and ${auFilter}`;
         
@@ -517,7 +523,9 @@ class TrademarkSearch {
         }
 
         // Create RSQL query with Mexico filter (International trademarks)
-        const baseQuery = `wordMarkSpecification.verbalElement==*${trademarkName}*`;
+        // Handle multi-word searches by wrapping in quotes
+        const escapedName = trademarkName.includes(' ') ? `"${trademarkName}"` : trademarkName;
+        const baseQuery = `wordMarkSpecification.verbalElement==*${escapedName}*`;
         const mxFilter = CONFIG.API.MX.QUERY_FILTER;
         const query = `${baseQuery} and ${mxFilter}`;
 
