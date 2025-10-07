@@ -18,8 +18,8 @@ const CONFIG = {
             OAUTH: {
                 TOKEN_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/accessToken',
                 AUTHORIZATION_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/authorize',
-                CLIENT_ID: '5a6c9a660fc2c2aea412cb317e4aeb6c',
-                CLIENT_SECRET: '451e4f1cc80ae12075f9c5d47bd556d8',
+                    CLIENT_ID: process.env.CLIENT_ID || '5a6c9a660fc2c2aea412cb317e4aeb6c',
+                    CLIENT_SECRET: process.env.CLIENT_SECRET || '451e4f1cc80ae12075f9c5d47bd556d8',
                 SCOPES: ['trademark-search.trademarks.read']
             },
             STATUS: 'ACTIVE',
@@ -41,8 +41,8 @@ const CONFIG = {
             OAUTH: {
                 TOKEN_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/accessToken',
                 AUTHORIZATION_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/authorize',
-                CLIENT_ID: '5a6c9a660fc2c2aea412cb317e4aeb6c',
-                CLIENT_SECRET: '451e4f1cc80ae12075f9c5d47bd556d8',
+                    CLIENT_ID: process.env.CLIENT_ID || '5a6c9a660fc2c2aea412cb317e4aeb6c',
+                    CLIENT_SECRET: process.env.CLIENT_SECRET || '451e4f1cc80ae12075f9c5d47bd556d8',
                 SCOPES: ['trademark-search.trademarks.read']
             },
             STATUS: 'ACTIVE',
@@ -64,8 +64,8 @@ const CONFIG = {
             OAUTH: {
                 TOKEN_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/accessToken',
                 AUTHORIZATION_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/authorize',
-                CLIENT_ID: '5a6c9a660fc2c2aea412cb317e4aeb6c',
-                CLIENT_SECRET: '451e4f1cc80ae12075f9c5d47bd556d8',
+                    CLIENT_ID: process.env.CLIENT_ID || '5a6c9a660fc2c2aea412cb317e4aeb6c',
+                    CLIENT_SECRET: process.env.CLIENT_SECRET || '451e4f1cc80ae12075f9c5d47bd556d8',
                 SCOPES: ['trademark-search.trademarks.read']
             },
             STATUS: 'ACTIVE',
@@ -87,8 +87,8 @@ const CONFIG = {
             OAUTH: {
                 TOKEN_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/accessToken',
                 AUTHORIZATION_URL: 'https://euipo.europa.eu/cas-server-webapp/oidc/authorize',
-                CLIENT_ID: '5a6c9a660fc2c2aea412cb317e4aeb6c',
-                CLIENT_SECRET: '451e4f1cc80ae12075f9c5d47bd556d8',
+                    CLIENT_ID: process.env.CLIENT_ID || '5a6c9a660fc2c2aea412cb317e4aeb6c',
+                    CLIENT_SECRET: process.env.CLIENT_SECRET || '451e4f1cc80ae12075f9c5d47bd556d8',
                 SCOPES: ['trademark-search.trademarks.read']
             },
             STATUS: 'ACTIVE',

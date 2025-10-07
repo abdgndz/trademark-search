@@ -204,7 +204,8 @@ class TrademarkSearch {
             });
             
             // Use proxy server to avoid CORS issues
-            const tokenResponse = await fetch('http://localhost:3001/api/oauth/token', {
+            const baseUrl = window.location.origin;
+            const tokenResponse = await fetch(`${baseUrl}/api/oauth/token`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -378,7 +379,8 @@ class TrademarkSearch {
         console.log('DE Filter from config:', deFilter);
 
         // Use proxy server to avoid CORS issues
-        const searchUrl = `http://localhost:3001/api/trademarks?query=${encodeURIComponent(query)}&size=100&page=0&sort=applicationDate:desc&access_token=${this.accessToken}`;
+        const baseUrl = window.location.origin;
+        const searchUrl = `${baseUrl}/api/trademarks?query=${encodeURIComponent(query)}&size=100&page=0&sort=applicationDate:desc&access_token=${this.accessToken}`;
 
         try {
             const response = await fetch(searchUrl, {
@@ -424,7 +426,8 @@ class TrademarkSearch {
         console.log('UK Filter from config:', ukFilter);
 
         // Use proxy server to avoid CORS issues
-        const searchUrl = `http://localhost:3001/api/trademarks?query=${encodeURIComponent(query)}&size=100&page=0&sort=applicationDate:desc&access_token=${this.accessToken}`;
+        const baseUrl = window.location.origin;
+        const searchUrl = `${baseUrl}/api/trademarks?query=${encodeURIComponent(query)}&size=100&page=0&sort=applicationDate:desc&access_token=${this.accessToken}`;
 
         try {
             const response = await fetch(searchUrl, {
@@ -475,7 +478,8 @@ class TrademarkSearch {
         }
 
         // Use proxy server to avoid CORS issues
-        const searchUrl = `http://localhost:3001/api/trademarks?query=${encodeURIComponent(query)}&size=100&page=0&sort=applicationDate:desc&access_token=${this.accessToken}`;
+        const baseUrl = window.location.origin;
+        const searchUrl = `${baseUrl}/api/trademarks?query=${encodeURIComponent(query)}&size=100&page=0&sort=applicationDate:desc&access_token=${this.accessToken}`;
 
         try {
             const response = await fetch(searchUrl, {
@@ -518,7 +522,8 @@ class TrademarkSearch {
         const query = `${baseQuery} and ${mxFilter}`;
 
         // Use proxy server to avoid CORS issues
-        const searchUrl = `http://localhost:3001/api/trademarks?query=${encodeURIComponent(query)}&size=100&page=0&sort=applicationDate:desc&access_token=${this.accessToken}`;
+        const baseUrl = window.location.origin;
+        const searchUrl = `${baseUrl}/api/trademarks?query=${encodeURIComponent(query)}&size=100&page=0&sort=applicationDate:desc&access_token=${this.accessToken}`;
 
         try {
             const response = await fetch(searchUrl, {
